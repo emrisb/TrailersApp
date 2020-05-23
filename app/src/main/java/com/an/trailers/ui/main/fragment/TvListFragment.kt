@@ -128,7 +128,6 @@ class TvListFragment : BaseFragment(), RecyclerItemClickListener.OnRecyclerViewI
     }
 
     override fun onItemClick(parentView: View, childView: View, position: Int) {
-        tvListViewModel.onStop()
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             activity, Pair(childView.findViewById(R.id.image), TRANSITION_IMAGE_NAME))
 

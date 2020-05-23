@@ -2,14 +2,14 @@ package com.an.trailers.ui.search.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.an.trailers.data.Resource
 import com.an.trailers.data.local.dao.MovieDao
 import com.an.trailers.data.local.entity.MovieEntity
 import com.an.trailers.data.remote.api.MovieApiService
 import com.an.trailers.data.repository.MovieRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class MovieSearchViewModel @Inject constructor(
@@ -22,9 +22,8 @@ class MovieSearchViewModel @Inject constructor(
 
     fun searchMovie(text: String) {
         movieRepository.searchMovies(1, text)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { resource -> moviesLiveData.postValue(resource) }
+            .onEach { resource -> moviesLiveData.postValue(resource) }
+            .launchIn(viewModelScope)
     }
 
     fun getMoviesLiveData() = moviesLiveData

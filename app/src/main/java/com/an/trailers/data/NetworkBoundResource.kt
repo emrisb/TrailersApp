@@ -1,74 +1,61 @@
 package com.an.trailers.data
 
 import androidx.annotation.MainThread
-import androidx.annotation.WorkerThread
-import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.*
 
 abstract class NetworkBoundResource<ResultType, RequestType> @MainThread
 protected constructor() {
 
-    private val asObservable: Observable<Resource<ResultType>>
+    private val asFlow: Flow<Resource<ResultType>>
 
     init {
-        val source: Observable<Resource<ResultType>>
+        val source: Flow<Resource<ResultType>>
         if (shouldFetch()) {
 
             source = createCall()
-                .subscribeOn(Schedulers.io())
-                .doOnNext {
-                    saveCallResult(processResponse(it)!!) }
-
-                .flatMap {
-                    loadFromDb().toObservable()
-                        .map { Resource.success(it) } }
-
-                .doOnError { onFetchFailed() }
-
-                .onErrorResumeNext { t : Throwable ->
-                    loadFromDb().toObservable().map {
-                        Resource.error(t.message!!, it) }
+                .onEach {
+                    saveCallResult(processResponse(it)!!)
                 }
 
-                .observeOn(AndroidSchedulers.mainThread())
+                .flatMapConcat {
+                    loadFromDb()
+                        .map { Resource.success(it) }
+                }
+
+                .catch { onFetchFailed() }
+
+                .catch { t: Throwable ->
+                    emitAll(loadFromDb().map {
+                        Resource.error(t.message!!, it)
+                    })
+                }
 
         } else {
             source = loadFromDb()
-                .toObservable()
                 .map { Resource.success(it) }
         }
 
-        asObservable = Observable.concat(
-            loadFromDb()
-                .toObservable()
-                .map { Resource.loading(it) }
-                .take(1),
-            source
-        )
+        asFlow = loadFromDb()
+            .map { Resource.loading(it) }
+            .take(1)
+            .onCompletion { emitAll(source) }
     }
 
-    fun getAsObservable(): Observable<Resource<ResultType>> {
-        return asObservable
+    fun getAsFlow(): Flow<Resource<ResultType>> {
+        return asFlow
     }
 
     private fun onFetchFailed() {}
 
-    @WorkerThread
     protected fun processResponse(response: Resource<RequestType>): RequestType? {
         return response.data
     }
 
-    @WorkerThread
-    protected abstract fun saveCallResult(item: RequestType)
+    protected abstract suspend fun saveCallResult(item: RequestType)
 
-    @MainThread
     protected abstract fun shouldFetch(): Boolean
 
-    @MainThread
-    protected abstract fun loadFromDb(): Flowable<ResultType>
+    protected abstract fun loadFromDb(): Flow<ResultType>
 
-    @MainThread
-    protected abstract fun createCall(): Observable<Resource<RequestType>>
+    protected abstract fun createCall(): Flow<Resource<RequestType>>
 }

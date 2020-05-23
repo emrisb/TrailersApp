@@ -130,7 +130,6 @@ class MovieListFragment : BaseFragment(), RecyclerItemClickListener.OnRecyclerVi
     }
 
     override fun onItemClick(parentView: View, childView: View, position: Int) {
-        moviesListViewModel.onStop()
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             requireActivity(), Pair(childView.findViewById(R.id.image), TRANSITION_IMAGE_NAME))
 

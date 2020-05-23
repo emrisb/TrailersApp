@@ -1,12 +1,15 @@
 package com.an.trailers.ui.main.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.an.trailers.data.Resource
 import com.an.trailers.data.local.dao.TvDao
 import com.an.trailers.data.local.entity.TvEntity
 import com.an.trailers.data.remote.api.TvApiService
 import com.an.trailers.data.repository.TvRepository
 import com.an.trailers.ui.base.BaseViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 import javax.inject.Inject
 
@@ -25,8 +28,8 @@ class TvListViewModel @Inject constructor(
 
     fun loadMoreTvs(currentPage: Long) {
         tvRepository.loadTvsByType(currentPage, type)
-                .doOnSubscribe { disposable -> addToDisposable(disposable) }
-                .subscribe { resource -> getTvListLiveData().postValue(resource) }
+            .onEach { resource -> getTvListLiveData().postValue(resource) }
+            .launchIn(viewModelScope)
     }
 
     fun isLastPage(): Boolean {

@@ -2,13 +2,14 @@ package com.an.trailers.ui.search.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.an.trailers.data.Resource
 import com.an.trailers.data.local.dao.TvDao
 import com.an.trailers.data.local.entity.TvEntity
 import com.an.trailers.data.remote.api.TvApiService
 import com.an.trailers.data.repository.TvRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 import javax.inject.Inject
 
@@ -21,9 +22,8 @@ class TvSearchViewModel @Inject constructor(
 
     fun searchTv(text: String) {
         tvRepository.searchTvs(1, text)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { resource -> tvsLiveData.postValue(resource) }
+            .onEach { resource -> tvsLiveData.postValue(resource) }
+            .launchIn(viewModelScope)
     }
 
     fun getTvListLiveData() = tvsLiveData

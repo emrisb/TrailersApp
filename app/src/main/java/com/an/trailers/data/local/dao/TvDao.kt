@@ -2,26 +2,26 @@ package com.an.trailers.data.local.dao
 
 import androidx.room.*
 import com.an.trailers.data.local.entity.TvEntity
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TvDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTvList(tvEntities: List<TvEntity>): LongArray
+    suspend fun insertTvList(tvEntities: List<TvEntity>): LongArray
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTv(tvEntity: TvEntity): Long
+    suspend fun insertTv(tvEntity: TvEntity): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateTv(tvEntity: TvEntity): Int
+    suspend fun updateTv(tvEntity: TvEntity): Int
 
     @Query("SELECT * FROM `TvEntity` where id = :id")
-    fun getTvById(id: Long?): TvEntity
+    suspend fun getTvById(id: Long?): TvEntity?
 
     @Query("SELECT * FROM `TvEntity` where id = :id")
-    fun getTvDetailById(id: Long?): Flowable<TvEntity>
+    fun getTvDetailById(id: Long?): Flow<TvEntity>
 
     @Query("SELECT * FROM `TvEntity` where page = :page")
-    fun getTvsByPage(page: Long): List<TvEntity>
+    suspend fun getTvsByPage(page: Long): List<TvEntity>?
 }
