@@ -1,7 +1,7 @@
 package com.an.trailers.db;
 
 
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.an.trailers.data.local.entity.TvEntity;
 import com.an.trailers.util.MockTestUtil;

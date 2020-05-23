@@ -1,14 +1,14 @@
 package com.an.trailers.ui.detail.activity
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.graphics.Paint
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.an.trailers.AppConstants.Companion.CREDIT_CREW
 import com.an.trailers.AppConstants.Companion.INTENT_MOVIE
 import com.an.trailers.AppConstants.Companion.TRANSITION_IMAGE_NAME
@@ -29,9 +29,8 @@ import com.an.trailers.utils.AppUtils
 import com.an.trailers.utils.NavigationUtils
 import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjection
-
+import java.util.*
 import javax.inject.Inject
-import java.util.Arrays
 
 class TvDetailActivity : BaseActivity() {
 

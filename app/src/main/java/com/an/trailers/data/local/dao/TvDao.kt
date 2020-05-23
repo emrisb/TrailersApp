@@ -1,6 +1,6 @@
 package com.an.trailers.data.local.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.an.trailers.data.local.entity.TvEntity
 import io.reactivex.Flowable
 

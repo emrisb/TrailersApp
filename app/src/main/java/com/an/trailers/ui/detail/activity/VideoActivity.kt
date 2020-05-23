@@ -1,8 +1,8 @@
 package com.an.trailers.ui.detail.activity
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.an.trailers.AppConstants
 import com.an.trailers.AppConstants.Companion.INTENT_VIDEO_KEY
 import com.an.trailers.R

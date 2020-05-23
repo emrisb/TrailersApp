@@ -1,15 +1,15 @@
 package com.an.trailers.db;
 
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.an.trailers.data.local.entity.MovieEntity;
 import com.an.trailers.util.MockTestUtil;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.an.trailers.AppConstants.MOVIES_POPULAR;

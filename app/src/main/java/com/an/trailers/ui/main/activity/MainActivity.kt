@@ -1,10 +1,9 @@
 package com.an.trailers.ui.main.activity
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.RadioGroup
+import androidx.databinding.DataBindingUtil
 import com.an.trailers.R
 import com.an.trailers.databinding.MainActivityBinding
 import com.an.trailers.ui.base.BaseActivity
@@ -12,15 +11,14 @@ import com.an.trailers.ui.base.custom.menu.MenuDrawerToggle
 import com.an.trailers.utils.AppUtils
 import com.an.trailers.utils.NavigationUtils
 import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), HasSupportFragmentInjector {
+class MainActivity : BaseActivity(), HasAndroidInjector {
 
     @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     private lateinit var binding: MainActivityBinding
     private lateinit var menuDrawerToggle: MenuDrawerToggle
@@ -109,7 +107,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
         menuDrawerToggle.onDestroy()
     }
 
-    override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> {
+    override fun androidInjector(): DispatchingAndroidInjector<Any> {
         return dispatchingAndroidInjector
     }
 }

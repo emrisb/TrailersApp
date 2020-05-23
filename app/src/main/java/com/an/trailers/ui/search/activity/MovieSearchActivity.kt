@@ -1,22 +1,20 @@
 package com.an.trailers.ui.search.activity
 
 import android.app.SearchManager
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.util.Pair
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.SnapHelper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.util.Pair
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.an.trailers.AppConstants.Companion.TRANSITION_IMAGE_NAME
 import com.an.trailers.R
 import com.an.trailers.data.local.entity.MovieEntity
@@ -31,7 +29,6 @@ import com.an.trailers.ui.search.viewmodel.MovieSearchViewModel
 import com.an.trailers.utils.AppUtils
 import com.an.trailers.utils.NavigationUtils
 import dagger.android.AndroidInjection
-
 import javax.inject.Inject
 
 class MovieSearchActivity : BaseActivity(), SearchView.OnQueryTextListener,
@@ -58,7 +55,8 @@ class MovieSearchActivity : BaseActivity(), SearchView.OnQueryTextListener,
         binding.search.setIconifiedByDefault(false)
         binding.search.setOnQueryTextListener(this)
 
-        val searchEditText = binding.search.findViewById<EditText>(android.support.v7.appcompat.R.id.search_src_text)
+        val searchEditText =
+            binding.search.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
         searchEditText.setTextColor(resources.getColor(android.R.color.white))
         searchEditText.setHintTextColor(resources.getColor(android.R.color.white))
         val myCustomFont = ResourcesCompat.getFont(applicationContext, R.font.gt_medium)

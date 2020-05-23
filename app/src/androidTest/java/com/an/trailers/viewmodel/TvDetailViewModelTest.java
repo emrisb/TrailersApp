@@ -1,13 +1,12 @@
 package com.an.trailers.viewmodel;
 
 import android.app.Application;
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.Observer;
-import android.support.test.InstrumentationRegistry;
 
-import com.an.trailers.data.local.entity.MovieEntity;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.Observer;
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import com.an.trailers.data.local.entity.TvEntity;
-import com.an.trailers.ui.detail.viewmodel.MovieDetailViewModel;
 import com.an.trailers.ui.detail.viewmodel.TvDetailViewModel;
 import com.an.trailers.util.MockTestUtil;
 

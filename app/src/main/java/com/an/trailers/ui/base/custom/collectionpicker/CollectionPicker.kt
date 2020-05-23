@@ -3,19 +3,17 @@ package com.an.trailers.ui.base.custom.collectionpicker
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
-import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import com.an.trailers.R
-
 import java.util.*
 
 class CollectionPicker

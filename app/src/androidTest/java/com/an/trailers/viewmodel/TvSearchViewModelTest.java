@@ -2,9 +2,10 @@ package com.an.trailers.viewmodel;
 
 
 import android.app.Application;
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.Observer;
-import android.support.test.InstrumentationRegistry;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.Observer;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.an.trailers.data.Resource;
 import com.an.trailers.data.local.entity.TvEntity;

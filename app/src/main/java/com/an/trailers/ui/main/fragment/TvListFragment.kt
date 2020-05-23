@@ -1,16 +1,15 @@
 package com.an.trailers.ui.main.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.os.Handler
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.util.Pair
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.an.trailers.AppConstants.Companion.INTENT_CATEGORY
 import com.an.trailers.AppConstants.Companion.MENU_TV_ITEM
 import com.an.trailers.AppConstants.Companion.TRANSITION_IMAGE_NAME
@@ -28,7 +27,6 @@ import com.an.trailers.ui.main.adapter.TvListAdapter
 import com.an.trailers.ui.main.viewmodel.TvListViewModel
 import com.an.trailers.utils.NavigationUtils
 import dagger.android.support.AndroidSupportInjection
-
 import javax.inject.Inject
 
 class TvListFragment : BaseFragment(), RecyclerItemClickListener.OnRecyclerViewItemClickListener {

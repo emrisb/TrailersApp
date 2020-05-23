@@ -1,11 +1,11 @@
 package com.an.trailers.data.remote.model
 
-import android.arch.persistence.room.TypeConverters
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.TypeConverters
 import com.an.trailers.data.local.converter.CastListTypeConverter
 import com.an.trailers.data.local.converter.CrewListTypeConverter
-import java.util.ArrayList
+import java.util.*
 
 data class CreditResponse(
     @TypeConverters(CrewListTypeConverter::class)

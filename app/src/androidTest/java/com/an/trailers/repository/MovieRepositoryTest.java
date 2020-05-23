@@ -1,6 +1,7 @@
 package com.an.trailers.repository;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
 import com.an.trailers.data.Resource;
 import com.an.trailers.data.local.dao.MovieDao;
 import com.an.trailers.data.local.entity.MovieEntity;
@@ -15,14 +16,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
+
 import static com.an.trailers.AppConstants.MOVIES_POPULAR;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
