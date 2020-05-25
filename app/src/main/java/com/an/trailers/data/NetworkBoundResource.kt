@@ -12,7 +12,7 @@ protected constructor() {
         val source: Flow<Resource<ResultType>>
         if (shouldFetch()) {
 
-            source = createCall()
+            source = flow { emit(createCall()) }
                 .onEach {
                     saveCallResult(processResponse(it)!!)
                 }
@@ -57,5 +57,5 @@ protected constructor() {
 
     protected abstract fun loadFromDb(): Flow<ResultType>
 
-    protected abstract fun createCall(): Flow<Resource<RequestType>>
+    protected abstract suspend fun createCall(): Resource<RequestType>
 }

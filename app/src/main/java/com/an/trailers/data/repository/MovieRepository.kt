@@ -6,11 +6,14 @@ import com.an.trailers.data.Resource
 import com.an.trailers.data.local.dao.MovieDao
 import com.an.trailers.data.local.entity.MovieEntity
 import com.an.trailers.data.remote.api.MovieApiService
-import com.an.trailers.data.remote.model.CreditResponse
 import com.an.trailers.data.remote.model.MovieApiResponse
-import com.an.trailers.data.remote.model.VideoResponse
 import com.an.trailers.utils.AppUtils
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Singleton
 
 
@@ -60,14 +63,12 @@ class MovieRepository(
                 }
             }
 
-            override fun createCall(): Flow<Resource<MovieApiResponse>> {
-                return flow { emit(movieApiService.fetchMoviesByType(type, page)) }
-                    .map { movieApiResponse ->
-                        if (movieApiResponse == null)
-                            Resource.error("", MovieApiResponse(page, emptyList(), 0, 1))
-                        else
-                            Resource.success(movieApiResponse)
-                    }
+            override suspend fun createCall(): Resource<MovieApiResponse> {
+                val movieApiResponse = movieApiService.fetchMoviesByType(type, page)
+                return if (movieApiResponse == null)
+                    Resource.error("", MovieApiResponse(page, emptyList(), 0, 1))
+                else
+                    Resource.success(movieApiResponse)
             }
         }.getAsFlow()
     }
@@ -98,36 +99,36 @@ class MovieRepository(
                 }
             }
 
-            override fun createCall(): Flow<Resource<MovieEntity>> {
+            override suspend fun createCall(): Resource<MovieEntity> = coroutineScope {
                 val id = movieId.toString()
-                return combine(
-                    flow { emit(movieApiService.fetchMovieDetail(id)) },
-                    flow { emit(movieApiService.fetchMovieVideo(id)) },
-                    flow { emit(movieApiService.fetchCastDetail(id)) },
-                    flow { emit(movieApiService.fetchSimilarMovie(id, 1)) }
-                ) { movieEntity: MovieEntity,
-                    videoResponse: VideoResponse?,
-                    creditResponse: CreditResponse?,
-                    movieApiResponse: MovieApiResponse? ->
+                val movieEntityDeferred = async { movieApiService.fetchMovieDetail(id) }
+                val videoResponseDeferred = async { movieApiService.fetchMovieVideo(id) }
+                val creditResponseDeferred = async { movieApiService.fetchCastDetail(id) }
+                val movieApiResponseDeferred =
+                    async { movieApiService.fetchSimilarMovie(id, 1) }
 
-                    if (videoResponse != null) {
-                        movieEntity.videos = videoResponse.results
-                    }
+                val movieEntity = movieEntityDeferred.await()
+                val videoResponse = videoResponseDeferred.await()
+                val creditResponse = creditResponseDeferred.await()
+                val movieApiResponse = movieApiResponseDeferred.await()
 
-                    if (creditResponse != null) {
-                        movieEntity.crews = creditResponse.crew
-                        movieEntity.casts = creditResponse.cast
-                    }
-
-                    if (movieApiResponse != null) {
-                        movieEntity.similarMovies = movieApiResponse.results
-                    }
-                    Resource.success(movieEntity)
+                if (videoResponse != null) {
+                    movieEntity.videos = videoResponse.results
                 }
+
+                if (creditResponse != null) {
+                    movieEntity.crews = creditResponse.crew
+                    movieEntity.casts = creditResponse.cast
+                }
+
+                if (movieApiResponse != null) {
+                    movieEntity.similarMovies = movieApiResponse.results
+                }
+
+                Resource.success(movieEntity)
             }
         }.getAsFlow()
     }
-
 
     fun searchMovies(
         page: Long,
@@ -168,15 +169,12 @@ class MovieRepository(
                 }
             }
 
-            override fun createCall(): Flow<Resource<MovieApiResponse>> {
-                return flow { emit(movieApiService.searchMoviesByQuery(query, "1")) }
-                    .map { movieApiResponse ->
-                        if (movieApiResponse == null) Resource.error(
-                            "",
-                            MovieApiResponse(1, emptyList(), 0, 1)
-                        )
-                        else Resource.success(movieApiResponse)
-                    }
+            override suspend fun createCall(): Resource<MovieApiResponse> {
+                val movieApiResponse = movieApiService.searchMoviesByQuery(query, "1")
+                return if (movieApiResponse == null)
+                    Resource.error("", MovieApiResponse(1, emptyList(), 0, 1))
+                else
+                    Resource.success(movieApiResponse)
             }
         }.getAsFlow()
     }
